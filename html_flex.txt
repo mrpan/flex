@@ -1,0 +1,33 @@
+//html页面 js方法
+function onGetMessage() {
+		if (lastMessage != null) {
+					document.getElementById('${swf}').MessageArrived(lastMessage);
+		}
+	}
+//flex页面方法
+ExternalInterface.addCallback("MessageArrived",MessageArrived);
+<fx:Script>
+		<![CDATA[
+			private function MessageArrived(info:String):void  
+			{
+				var json:Object;
+				try
+				{
+					json = JSON.decode(info);
+				}
+				catch (ex:Error)
+				{
+					trace("error message:"+info); 
+					return;
+				}
+				//				if(json.to != 'gis' || json.name != 'paramsChangeEvent') 
+				//					return;
+				if(json.to == 'gis'){
+					if(json.name == 'paramsChangeEvent'){
+						userImsi = json.params[0].userImsi;
+						loaddata();
+					}
+				}
+			}	
+		]]>
+</fx:Script>
